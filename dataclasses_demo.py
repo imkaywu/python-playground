@@ -8,7 +8,7 @@ implement complex behavior. They eliminate a large amount of boilerplate while
 remaining regular Python classes.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 # Similar to:
@@ -28,6 +28,11 @@ class Item:
     name: str
     value: int
     weight: float
+
+    display_name: str = field(init=False)
+
+    def __post_init__(self):
+        self.display_name = self.name.upper()
 
 
 class Inventory:
@@ -54,6 +59,8 @@ def main():
     inventory.add(shield)
 
     print(sword)
+
+    print(f"Item display name: {sword.display_name}")
 
     print(sword == Item("Iron Sword", 100, 5.0))
 
