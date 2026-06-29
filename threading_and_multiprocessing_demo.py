@@ -1,3 +1,8 @@
+"""
+This demo is based on the tutorial 'threading vs multiprocessing in python'
+(AZnGRKFUU0c)
+"""
+
 import numpy as np
 
 from utils.process_demo import ProcessDemo
