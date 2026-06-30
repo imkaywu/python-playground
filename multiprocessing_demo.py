@@ -1,12 +1,22 @@
+"""
+This demo is based on the tutorial 'threading vs multiprocessing in python'
+(AZnGRKFUU0c)
+"""
+
 import multiprocessing as mp
 import time
 
 import numpy as np
 
 from utils.cpu_task import sample_progress_process
+from utils.visualize import TimelineVisualizer
+
+NUM_WORKERS = 8
+WORK_DURATION = 2.0
+SAMPLE_INTERVAL_MS = 5.0
 
 
-class ProcessDemo:
+class MultiProcessingDemo:
 
     def __init__(
         self,
@@ -54,3 +64,33 @@ class ProcessDemo:
             )
 
         return self.work_duration, timelines
+
+
+def main():
+
+    process_demo = MultiProcessingDemo(
+        num_workers=NUM_WORKERS,
+        work_duration=WORK_DURATION,
+        sample_interval_ms=SAMPLE_INTERVAL_MS,
+    )
+
+    process_time, process_timelines = process_demo.run()
+
+    print(f"Completed in {process_time:.3f} s")
+
+    process_vis = TimelineVisualizer(
+        timelines=process_timelines,
+        total_time=process_time,
+        title=f"Multiprocessing ({NUM_WORKERS} processes)",
+    )
+
+    process_vis.animate()
+
+    print()
+    print("=" * 60)
+    print(f"Multiprocessing: {process_time:.3f} s")
+    print("=" * 60)
+
+
+if __name__ == "__main__":
+    main()
