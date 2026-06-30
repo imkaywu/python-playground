@@ -1,96 +1,180 @@
 """
-This demo is based on the tutorial 'threading vs multiprocessing in python'
-(AZnGRKFUU0c)
+`multiprocessing` allows Python programs to run code in multiple processes
+instead of multiple threads. Since each process has its own Python interpreter
+and memory space, each process also has its own GIL, allowing true parallel
+execution of CPU-bound code.
+
+The trade-off is that processes are much heavier than threads. They take longer
+to create, use more memory, and cannot directly share Python objects.
 """
 
-import multiprocessing as mp
+import os
 import time
-
-import numpy as np
-
-from utils.cpu_task import sample_progress_process
-from utils.visualize import TimelineVisualizer
-
-NUM_WORKERS = 8
-WORK_DURATION = 2.0
-SAMPLE_INTERVAL_MS = 5.0
+from multiprocessing import Manager, Pool, Process, Queue, Value
 
 
-class MultiProcessingDemo:
+# Creating Processes
+def worker(name):
 
-    def __init__(
-        self,
-        num_workers=8,
-        work_duration=2.0,
-        sample_interval_ms=1.0,
-    ):
-        self.num_workers = num_workers
-        self.work_duration = work_duration
-        self.sample_interval_ms = sample_interval_ms
+    print(f"{name} running " f"(PID={os.getpid()})")
 
-        self.dt = int(sample_interval_ms * 1e6)
-
-        self.num_bins = int(work_duration * 1000 / sample_interval_ms)
-
-        # Base timeline.
-        # Every worker receives its own copy.
-
-        self.template = np.zeros(
-            (self.num_bins, 2),
-            dtype=np.int64,
-        )
-
-        self.template[:, 0] = np.arange(self.num_bins) * self.dt
-
-    def run(self):
-
-        # Create one copy per process.
-
-        arrays = [np.copy(self.template) for _ in range(self.num_workers)]
-
-        # Pool
-
-        with mp.Pool(self.num_workers) as pool:
-
-            # Warm up all workers first.
-            pool.map(int, range(self.num_workers))
-
-            t0 = time.time()
-            t1 = time.perf_counter_ns()
-
-            timelines = pool.starmap(
-                sample_progress_process,
-                [(t0, t1, arr) for arr in arrays],
-            )
-
-        return self.work_duration, timelines
+    time.sleep(0.1)
 
 
-def main():
+def example_1():
+    p1 = Process(target=worker, args=("Worker A",))
+    p2 = Process(target=worker, args=("Worker B",))
 
-    process_demo = MultiProcessingDemo(
-        num_workers=NUM_WORKERS,
-        work_duration=WORK_DURATION,
-        sample_interval_ms=SAMPLE_INTERVAL_MS,
-    )
+    p1.start()
+    p2.start()
 
-    process_time, process_timelines = process_demo.run()
+    p1.join()
+    p2.join()
 
-    print(f"Completed in {process_time:.3f} s")
-
-    process_vis = TimelineVisualizer(
-        timelines=process_timelines,
-        total_time=process_time,
-        title=f"Multiprocessing ({NUM_WORKERS} processes)",
-    )
-
-    process_vis.animate()
-
-    print()
-    print("=" * 60)
-    print(f"Multiprocessing: {process_time:.3f} s")
-    print("=" * 60)
+    print("Done")
 
 
+# Global Variables are Not Shared
+counter = 0
+
+
+def increment():
+    global counter
+
+    counter += 1
+
+    print(counter)
+
+
+def example_2():
+    p = Process(target=increment)
+
+    p.start()
+    p.join()
+
+    print(counter)
+
+
+# Process Pool
+def square(x):
+    return x * x
+
+
+def example_3():
+    with Pool(4) as pool:
+        result = pool.map(square, range(10))
+
+    print(result)
+
+
+# Returning Values
+def enqueue(queue):
+    queue.put("Hello from worker!")
+    queue.put("Hello again from worker!")
+
+
+def example_4():
+    queue = Queue()
+
+    p = Process(target=enqueue, args=(queue,))
+
+    p.start()
+
+    message = queue.get()
+
+    p.join()
+
+    print(message)
+
+    message = queue.get()
+
+    print(message)
+
+
+# Sharing Memory
+def count(counter):
+    counter.value += 1
+
+
+def example_5():
+    counter = Value("i", 0)
+
+    processes = []
+
+    for _ in range(5):
+        p = Process(target=count, args=(counter,))
+
+        p.start()
+
+        processes.append(p)
+
+    for p in processes:
+        p.join()
+
+    print(counter.value)
+
+
+# Sharing Lists
+def append_list(shared):
+    shared.append("hello")
+
+
+def example_6():
+    # `Manager` provides process-safe shared containers
+    manager = Manager()
+
+    shared = manager.list()
+
+    workers = []
+
+    for _ in range(4):
+        p = Process(target=append_list, args=(shared,))
+
+        p.start()
+
+        workers.append(p)
+
+    for p in workers:
+        p.join()
+
+    print(list(shared))
+
+
+# CPU parallelism
+def compute(_):
+
+    total = 0
+
+    for i in range(30_000_000):
+        total += i
+
+    return total
+
+
+def example_7():
+    start = time.perf_counter()
+
+    with Pool(4) as pool:
+        pool.map(compute, range(4))
+
+    end = time.perf_counter()
+
+    print(f"{end-start:.2f} seconds")
+
+
+# NOTE: Without `if __name__ == "__main__"`, Process(...) may repeatedly create
+# child processes, causing an infinite spawning loop.
 if __name__ == "__main__":
-    main()
+    example_1()
+
+    example_2()
+
+    example_3()
+
+    example_4()
+
+    example_5()
+
+    example_6()
+
+    example_7()
