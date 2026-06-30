@@ -1,106 +1,154 @@
 """
-This demo is based on the tutorial 'threading vs multiprocessing in python'
-(AZnGRKFUU0c)
+Threading allows a single process to execute multiple threads concurrently.
+Threads share the same memory space, making communication between them fast, but
+also introducing the possibility of race conditions when multiple threads access
+the same data.
+
+Threading is most effective for I/O-bound tasks (network requests, file
+operations, waiting for databases), but it does not speed up CPU-bound Python
+code because of the Global Interpreter Lock (GIL), which we'll discuss in the
+next topic.
 """
 
+import queue
 import threading
 import time
-
-import numpy as np
-
-from utils.cpu_task import sample_progress_thread
-from utils.visualize import TimelineVisualizer
-
-NUM_WORKERS = 8
-WORK_DURATION = 2.0
-SAMPLE_INTERVAL_MS = 5.0
+from concurrent.futures import ThreadPoolExecutor
 
 
-class ThreadingDemo:
+def download(name):
 
-    def __init__(
-        self,
-        num_workers=8,
-        work_duration=2.0,
-        sample_interval_ms=1.0,
-    ):
-
-        self.num_workers = num_workers
-
-        dt = int(sample_interval_ms * 1e6)
-
-        num_bins = int(work_duration * 1000 / sample_interval_ms)
-
-        self.dt = dt
-        self.num_bins = num_bins
-
-        self.timeline = []
-
-        for _ in range(num_workers):
-
-            arr = np.zeros((num_bins, 2), dtype=np.int64)
-
-            arr[:, 0] = np.arange(num_bins) * dt
-
-            self.timeline.append(arr)
-
-    def run(self):
-
-        t0 = time.perf_counter_ns()
-
-        threads = []
-
-        for worker in range(self.num_workers):
-
-            t = threading.Thread(
-                target=sample_progress_thread,
-                args=(
-                    t0,
-                    self.timeline[worker],
-                ),
-            )
-
-            t.start()
-
-            threads.append(t)
-
-        for t in threads:
-            t.join()
-
-        elapsed = (time.perf_counter_ns() - t0) / 1e9
-
-        return elapsed, self.timeline
+    for i in range(5):
+        print(f"{name}: downloading chunk {i}")
+        time.sleep(0.1)
 
 
-def main():
+# start()/join()
+def example_1():
+    t1 = threading.Thread(target=download, args=("File A",))
 
-    print("=" * 60)
-    print("THREADING")
-    print("=" * 60)
+    t2 = threading.Thread(target=download, args=("File B",))
 
-    thread_demo = ThreadingDemo(
-        num_workers=NUM_WORKERS,
-        work_duration=WORK_DURATION,
-        sample_interval_ms=SAMPLE_INTERVAL_MS,
-    )
+    t1.start()
+    t2.start()
 
-    thread_time, thread_timelines = thread_demo.run()
+    t1.join()
+    t2.join()
 
-    print(f"Completed in {thread_time:.3f} s")
+    print("All downloads finished.")
 
-    thread_vis = TimelineVisualizer(
-        timelines=thread_timelines,
-        total_time=thread_time,
-        title=f"Threading ({NUM_WORKERS} threads)",
-    )
 
-    thread_vis.animate()
+counter = 0
 
-    print()
-    print("=" * 60)
-    print(f"Threading      : {thread_time:.3f} s")
-    print("=" * 60)
+
+def increment():
+
+    global counter
+
+    for _ in range(100_000):
+        counter += 1
+
+
+# Race condition
+def example_2():
+    threads = []
+
+    for _ in range(4):
+        t = threading.Thread(target=increment)
+        threads.append(t)
+        t.start()
+
+    for t in threads:
+        t.join()
+
+    print(f"Counter: {counter}")
+
+
+counter_w_lock = 0
+lock = threading.Lock()
+
+
+def increment_w_lock():
+
+    global counter_w_lock
+
+    for _ in range(100_000):
+        with lock:
+            counter_w_lock += 1
+
+
+# Lock
+def example_3():
+    threads = []
+
+    for _ in range(4):
+        t = threading.Thread(target=increment_w_lock)
+        threads.append(t)
+        t.start()
+
+    for t in threads:
+        t.join()
+
+    print(f"Counter: {counter_w_lock}")
+
+
+# Producer-Consumer Pattern
+tasks = queue.Queue()  # queue.Queue is thread safe
+
+
+def producer():
+    for i in range(5):
+        print(f"Produced {i}")
+        tasks.put(i)
+        time.sleep(1)
+
+    tasks.put(None)
+
+
+def consumer():
+    while True:
+        task = tasks.get()
+
+        if task is None:
+            break
+
+        print(f"Consumed {task}")
+
+
+def example_4():
+    producer_thread = threading.Thread(target=producer)
+    consumer_thread = threading.Thread(target=consumer)
+
+    producer_thread.start()
+    consumer_thread.start()
+
+    producer_thread.join()
+    consumer_thread.join()
+
+
+# Thread Pool
+def square(x):
+
+    time.sleep(1)
+
+    return x * x
+
+
+def example_5():
+    with ThreadPoolExecutor(max_workers=4) as executor:
+
+        results = executor.map(square, range(8))
+
+        print(list(results))
 
 
 if __name__ == "__main__":
-    main()
+    example_1()
+
+    example_2()
+
+    example_3()
+
+    example_4()
+
+    example_5()
