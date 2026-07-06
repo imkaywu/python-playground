@@ -226,6 +226,7 @@ def example_14():
 
     numbers = [1, 2, 3]
 
+    # reduce(function, iterable, initializer)
     result = reduce(lambda a, b: a + b, numbers, 100)
 
     print(result)
@@ -240,6 +241,8 @@ def example_15():
 
     words = ["Python", "is", "awesome"]
 
+    # 1st arg: receives the accumulated value from previous iterations
+    # 2nd arg: receives each element from the list
     total = reduce(lambda total, word: total + len(word), words, 0)
 
     print(total)
@@ -290,6 +293,7 @@ def example_18():
         ("Charlie", 95),
     ]
 
+    # Union operator | (Python 3.9+) to merge dictionaries
     result = reduce(lambda d, pair: d | {pair[0]: pair[1]}, pairs, {})
 
     print(result)
