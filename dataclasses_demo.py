@@ -29,8 +29,15 @@ class Item:
     value: int
     weight: float
 
-    display_name: str = field(init=False)
+    display_name: str = field(init=False)  # Not passed to __init__
 
+    # __post_init__ is a method specifically for dataclass, automatically
+    # called after the dataclass's __init__ method completes. It's used for:
+    #
+    #   - Validation of field values
+    #   - Post-processing or derived attributes
+    #   - Default factory logic that depends on other fields
+    #   - Side effects after initialization
     def __post_init__(self):
         self.display_name = self.name.upper()
 
@@ -64,9 +71,9 @@ def main():
 
     print(sword == Item("Iron Sword", 100, 5.0))
 
-    print(f"Total value: " f"{inventory.total_value()}")
+    print(f"Total value: {inventory.total_value()}")
 
-    print(f"Total weight: " f"{inventory.total_weight()}")
+    print(f"Total weight: {inventory.total_weight()}")
 
 
 if __name__ == "__main__":

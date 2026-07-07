@@ -1,5 +1,6 @@
 """
-A descriptor is an object that controls what happens when an attribute is accessed, assigned, or deleted. A descriptor implements one or more of:
+A descriptor is an object that controls what happens when an attribute is
+accessed, assigned, or deleted. A descriptor implements one or more of:
 
     __get__()
     __set__()
@@ -7,7 +8,7 @@ A descriptor is an object that controls what happens when an attribute is access
 
 Descriptors form the foundation of many built-in features such as:
 
-    @propery
+    @property
     classmethod
     staticmethod
 """
@@ -19,12 +20,12 @@ class PositiveInteger:
     # on descriptors found in the class body.
     def __set_name__(self, owner, name):
         self.private_name = "_" + name
-        print(f"owner={owner.__name__}, " f"name={name}")
+        print(f"Creating an attribute name={name} in owner={owner.__name__}")
 
     def __get__(self, instance, owner):
 
         print(
-            f"self={self}\n" f"instance={instance}\n" f"owner={owner.__name__}"
+            f"Getting instance={instance} attribute name={self.private_name}, owner={owner.__name__}"
         )
         if instance is None:
             return self
@@ -32,6 +33,10 @@ class PositiveInteger:
         return getattr(instance, self.private_name)
 
     def __set__(self, instance, value):
+
+        print(
+            f"Setting instance={instance} attribute name={self.private_name}, value={value}"
+        )
 
         if not isinstance(value, int):
             raise TypeError("Must be an integer")
@@ -86,6 +91,8 @@ class Circle:
     def __init__(self, radius):
         self.radius = radius
 
+    # @property (getter): makes a method callable without parentheses - like an
+    # attribute.
     @property
     def area(self):
         return 3.14 * self.radius**2

@@ -122,7 +122,7 @@ class RepeatDecorator:
 
 @RepeatDecorator(times=3)
 def greet(name):
-    return f"Hello, {name}!"
+    return f"Hello {name}!"
 
 
 # Example 4: Class method decorator (decorating methods inside a class)
@@ -159,11 +159,14 @@ class Person:
         self._first_name = first_name
         self._last_name = last_name
 
+    # @property (getter): makes a method callable without parentheses - like an
+    # attribute.
     @property
     def full_name(self):
         """This acts like an attribute but computes the value"""
         return f"{self._first_name} {self._last_name}"
 
+    # @property_name.setter
     @full_name.setter
     def full_name(self, name):
         """Allows setting the full name which updates both parts"""
@@ -199,8 +202,8 @@ def main():
     print("EXAMPLE 3: RepeatDecorator (parameterized class decorator)")
     print("=" * 50)
 
-    greet("Alice")
-    greet("Bob")
+    print(greet("Alice"))
+    print(greet("Bob"))
 
     print("\n" + "=" * 50)
     print("EXAMPLE 4: Method decorator inside a class")

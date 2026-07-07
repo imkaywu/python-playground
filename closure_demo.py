@@ -42,6 +42,8 @@ def create_counter():
     count = 1000
 
     def increment():
+        # Used in nested functions to modify variables from the enclosing
+        # (outer) function's scope (not global).
         nonlocal count
 
         count += 1

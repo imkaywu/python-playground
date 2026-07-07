@@ -17,11 +17,10 @@ function.
 import time
 from functools import lru_cache, partial, singledispatch, wraps
 
+
 # ================================================
 # lru_cache
 # ================================================
-
-
 @lru_cache(maxsize=None)
 def fib(n):
     if n < 2:
@@ -32,8 +31,6 @@ def fib(n):
 # ================================================
 # partial
 # ================================================
-
-
 def send_notification(channel, username, message):
     print(f"[{channel}] {username}: {message}")
 
@@ -41,8 +38,6 @@ def send_notification(channel, username, message):
 # ================================================
 # singledispatch
 # ================================================
-
-
 @singledispatch
 def serialize(obj):
     raise TypeError(f"Unsupported type: {type(obj)}")
@@ -66,8 +61,6 @@ def _(obj: list):
 # ================================================
 # wraps
 # ================================================
-
-
 def logger(func):
 
     @wraps(func)
@@ -86,8 +79,6 @@ def add(a, b):
 # ================================================
 # main
 # ================================================
-
-
 def main():
     print("=== lru_cache ===")
     start = time.perf_counter()
