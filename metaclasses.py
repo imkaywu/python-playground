@@ -36,6 +36,7 @@ class CommandMeta(type):
             f"bases: {bases}\n"
             f"namespace: {namespace}"
         )
+        print("-" * 40)
         new_class = super().__new__(cls, name, bases, namespace)
 
         if name != "Command":
@@ -71,6 +72,26 @@ def main():
     cmd = registry["hello"]()
 
     cmd.execute()
+
+    print("-" * 40)
+
+    print(registry["hello"])
+    print(cmd)
+
+    print("-" * 40)
+
+    print(isinstance(registry["hello"], type))
+    print(isinstance(registry["hello"], object))
+
+    print("-" * 40)
+
+    print(isinstance(cmd, type))
+    print(isinstance(cmd, object))
+
+    print("-" * 40)
+
+    print(type(registry["hello"]))
+    print(type(cmd))
 
 
 if __name__ == "__main__":

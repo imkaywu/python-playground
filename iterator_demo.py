@@ -294,8 +294,16 @@ def example_15():
 
     print(type(z))
 
-    for pair in z:
-        print(pair)
+    pairs = []
+    for name, age in z:
+        print((name, age))
+        pairs.append((name, age))
+
+    print()
+
+    names_, ages_ = list(zip(*pairs))
+    print(names_)
+    print(ages_)
 
 
 # ------------------------------------------------------------
@@ -330,6 +338,7 @@ def example_17():
             self.value = 1
 
         def __iter__(self):
+            print("__iter__() called")
             return self
 
         def __next__(self):

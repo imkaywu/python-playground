@@ -3,8 +3,8 @@
 They allow you to process collections by applying functions rather than writing
 explicit loops. Each has a distinct purpose:
 
-- `map()` transforms every element.
-- `filter()` selects elements that satisfy a condition.
+- `map()` transforms every element, returns Iterator type
+- `filter()` selects elements that satisfy a condition, returns Iterator type.
 - `reduce()` combines all elements into a single result.
 
 Although list comprehensions are often preferred for readability, these
@@ -332,7 +332,6 @@ def example_20():
 # Main
 # ------------------------------------------------------------
 if __name__ == "__main__":
-
     example_01()
     example_02()
     example_03()

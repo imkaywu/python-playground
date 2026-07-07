@@ -24,9 +24,9 @@ threading can significantly improve the throughput of I/O-bound applications
 even though it does not provide parallel execution of CPU-bound Python code.
 """
 
-import threading
 import time
 from multiprocessing import Process
+from threading import Thread
 
 
 # CPU-bound
@@ -41,8 +41,8 @@ def compute():
 def cpu_bound_thread():
     start = time.perf_counter()
 
-    t1 = threading.Thread(target=compute)
-    t2 = threading.Thread(target=compute)
+    t1 = Thread(target=compute)
+    t2 = Thread(target=compute)
 
     t1.start()
     t2.start()
@@ -85,8 +85,8 @@ def download(name):
 def io_bound_task():
     start = time.perf_counter()
 
-    t1 = threading.Thread(target=download, args=("File A",))
-    t2 = threading.Thread(target=download, args=("File B",))
+    t1 = Thread(target=download, args=("File A",))
+    t2 = Thread(target=download, args=("File B",))
 
     t1.start()
     t2.start()

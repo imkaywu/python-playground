@@ -54,7 +54,8 @@ def example_02():
 
 # ------------------------------------------------------------
 # Example 03
-# dir()
+# dir(): returns a sorted list of all valid attributes and methods of any
+# object (or module, class, etc.)
 # ------------------------------------------------------------
 def example_03():
     print("\n========== Example 03: dir() ==========")
@@ -67,6 +68,7 @@ def example_03():
     person = Person()
 
     print(dir(person))
+    print(person.__class__)
 
 
 # ------------------------------------------------------------
@@ -84,6 +86,9 @@ def example_04():
 
     person = Person()
 
+    # `vars()` returns the `__dict__` attribute of an object (its namespace of
+    # writable attributes) as a dictionary, or acts like `locals()` if called
+    # with no argument.
     print(vars(person))
     print(person.__dict__)
 
@@ -359,7 +364,6 @@ def example_17():
 # Main
 # ------------------------------------------------------------
 if __name__ == "__main__":
-
     example_01()
     example_02()
     example_03()

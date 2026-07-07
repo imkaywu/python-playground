@@ -129,6 +129,7 @@ def example_05():
     module_name = "math"
 
     module = importlib.import_module(module_name)
+    print(module)
 
     print(module.sqrt(25))
 
@@ -345,7 +346,6 @@ def example_14():
 # Main
 # ------------------------------------------------------------
 if __name__ == "__main__":
-
     example_01()
     example_02()
     example_03()
