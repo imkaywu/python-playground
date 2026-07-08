@@ -26,7 +26,6 @@ def download(name):
 # start()/join()
 def example_1():
     t1 = threading.Thread(target=download, args=("File A",))
-
     t2 = threading.Thread(target=download, args=("File B",))
 
     t1.start()

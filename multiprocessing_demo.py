@@ -34,7 +34,7 @@ def example_1():
     print("Done")
 
 
-# Global Variables are Not Shared
+# Global Variables are **Not Shared**
 counter = 0
 
 
