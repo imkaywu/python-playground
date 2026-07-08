@@ -19,6 +19,8 @@ from typing import Protocol, runtime_checkable
 
 
 # Case 1
+# `@runtime_checkable` is a decorator from the `typing` module that makes your
+# protocols work with `isinstance()` and `issubclass()` checks at runtime.
 @runtime_checkable
 class Writer(Protocol):
 

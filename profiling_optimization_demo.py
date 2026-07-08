@@ -17,6 +17,12 @@ import timeit
 import tracemalloc
 from functools import lru_cache
 
+# time.time(): returns the system wall-clock time (real-world time) as seconds
+# since January 1, 1970 (the Unix Epoch).
+
+# time.perf_counter(): returns a high-resolution timer that never goes
+# backwards.
+
 
 # ------------------------------------------------------------
 # Example 01
@@ -42,6 +48,9 @@ def example_01():
 def example_02():
     print("\n========== Example 02: timeit ==========")
 
+    # timeit.timeit(stmt, setup='pass', number=1000000, globals=None)
+    #   - stmt: The code you want to time (as a string).
+    #   - number: How many times to run stmt. Default is 1,000,000.
     elapsed = timeit.timeit(stmt="sum(range(1000))", number=10000)
 
     print(f"{elapsed:.6f} seconds")
