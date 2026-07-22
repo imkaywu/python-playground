@@ -87,10 +87,15 @@ def main():
         def f():
             return i
 
+        funcs.append(f)
+
+    print(f"i={i}")
+
+    for i in range(3):
+
         def f2(i=i):
             return i
 
-        funcs.append(f)
         funcs.append(f2)
 
     for f in funcs:

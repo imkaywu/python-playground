@@ -77,7 +77,7 @@ def download(name):
 
     print(f"{name} started")
 
-    time.sleep(3)
+    time.sleep(1)
 
     print(f"{name} finished")
 

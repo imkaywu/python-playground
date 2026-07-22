@@ -69,6 +69,7 @@ def example_03():
 
     print(dir(person))
     print(person.__class__)
+    print(person.__dict__)
 
 
 # ------------------------------------------------------------

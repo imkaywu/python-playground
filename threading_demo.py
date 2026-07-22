@@ -10,6 +10,9 @@ code because of the Global Interpreter Lock (GIL), which we'll discuss in the
 next topic.
 """
 
+# A synchronized queue class which implements multi-producer, multi-consumer
+# queues, useful in threaded programming when information must be exchanged
+# safely between multiple threads.
 import queue
 import threading
 import time

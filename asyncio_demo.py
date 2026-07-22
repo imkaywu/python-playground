@@ -16,6 +16,20 @@ on an operation that cannot complete immediately (such as network I/O or
 schedules another ready coroutine. Because the program switches between
 coroutines while they are waiting, many tasks can make progress concurrently
 without creating additional threads.
+
+await:
+    Pauses the execution of the coroutine, yields control back to the event
+    loop, allowing other tasks to run while waiting.
+gather:
+    Takes multiple "awaitable" operations, kicks them off concurrently, and
+    returns a list of their results.
+create_task:
+    Wrap a coroutine into a Task and schedule its execution. Return the Task
+    object.
+wait_for:
+    If the target awaitable does not finish within the specified seconds, it is
+    automatically canceled, and a TimeoutError is raised.
+
 """
 
 import asyncio
@@ -62,6 +76,7 @@ async def countdown():
 
 
 async def create_task():
+    # NOTE: instant scheduling
     task = asyncio.create_task(countdown())
 
     print("Doing something else...")

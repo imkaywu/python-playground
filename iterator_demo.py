@@ -167,6 +167,10 @@ def example_09():
         print(next(f).strip())
         print(next(f).strip())
 
+    import os
+
+    os.remove(filename)
+
 
 # ------------------------------------------------------------
 # Example 10
@@ -275,6 +279,7 @@ def example_14():
     e = enumerate(letters)
 
     print(type(e))
+    print(isinstance(e, Iterator))
 
     for index, value in e:
         print(index, value)
@@ -293,6 +298,7 @@ def example_15():
     z = zip(names, ages)
 
     print(type(z))
+    print(isinstance(z, Iterator))
 
     pairs = []
     for name, age in z:

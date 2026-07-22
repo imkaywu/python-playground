@@ -25,6 +25,8 @@ Python Virtual Machine (PVM)
 CPU Instructions
 """
 
+# A built-in standard library tool used to disassemble CPython bytecode into
+# human-readable instructions
 import dis
 
 

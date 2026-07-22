@@ -85,6 +85,7 @@ def example_05():
     values = [0, "", None, "Python", [], 42, False]
 
     print(list(filter(None, values)))
+    print(list(filter(lambda x: x, values)))
 
 
 # ------------------------------------------------------------
@@ -195,9 +196,7 @@ def example_12():
 
     print("Nothing has executed yet.")
 
-    print()
-
-    list(mapped)
+    print(list(mapped))
 
 
 # ------------------------------------------------------------

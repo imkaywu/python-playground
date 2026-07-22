@@ -74,6 +74,8 @@ def enqueue(queue):
 
 
 def example_4():
+    # A specialized Queue variant used when you need to pass data between
+    # separate processes rather than threads.
     queue = Queue()
 
     p = Process(target=enqueue, args=(queue,))

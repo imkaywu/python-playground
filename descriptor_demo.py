@@ -6,11 +6,19 @@ accessed, assigned, or deleted. A descriptor implements one or more of:
     __set__()
     __delete__()
 
+Data descriptor:
+    Define both __get__ and __set__ (or __delete__)
+    Used for managing attributes where reads and writes need control
+
+Non-Data descriptor:
+    Define only __get__
+    Used for computed attributes or read-only access.
+
 Descriptors form the foundation of many built-in features such as:
 
-    @property
-    classmethod
-    staticmethod
+    @property     -> data descriptor
+?   classmethod   -> non-data descriptor (alternative ctor)
+?   staticmethod  -> non-data descriptor (util function)
 """
 
 

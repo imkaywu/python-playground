@@ -19,6 +19,7 @@ import shutil
 import sys
 import tempfile
 import textwrap
+import time
 
 
 # ------------------------------------------------------------
@@ -155,6 +156,20 @@ def example_06():
 
         print(demo.value)
 
+        # ------------------------------------------
+        # importlib.reload() re-executes the module, but Python may reuse
+        # cached bytecode (__pycache__) if the file's modification time hasn't
+        # changed (often 1-second resolution). If the file is rewritten too
+        # quickly, reload() may still execute the old bytecode.
+
+        # solution 1:
+        # time.sleep(1.1)
+
+        # solution 2:
+        cache = os.path.join(temp_dir, "__pycache__")
+        shutil.rmtree(cache, ignore_errors=True)
+        # ------------------------------------------
+
         with open(module_path, "w") as f:
             f.write('value = "Version 2"\n')
 
@@ -181,9 +196,10 @@ def example_07():
             f.write(
                 textwrap.dedent(
                     """
+                print("Loaded A")
                 import b
 
-                print("Loaded A")
+                x = 42
             """
                 )
             )
@@ -192,9 +208,10 @@ def example_07():
             f.write(
                 textwrap.dedent(
                     """
+                print("Loaded B")
                 import a
 
-                print("Loaded B")
+                print(a.x)
             """
                 )
             )

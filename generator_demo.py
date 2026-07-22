@@ -49,8 +49,9 @@ def traverse(root, path=None):
 
     if not root.children:
         yield path
-        return
 
+    # yield from: delegate part of operations to another iterable or
+    # sub-generator.
     for child in root.children:
         yield from traverse(child, path)
 
