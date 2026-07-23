@@ -67,10 +67,9 @@ def example_2():
 
 
 counter_w_lock = 0
-lock = threading.Lock()
 
 
-def increment_w_lock():
+def increment_w_lock(lock):
 
     global counter_w_lock
 
@@ -83,8 +82,10 @@ def increment_w_lock():
 def example_3():
     threads = []
 
+    lock = threading.Lock()
+
     for _ in range(4):
-        t = threading.Thread(target=increment_w_lock)
+        t = threading.Thread(target=increment_w_lock, args=(lock,))
         threads.append(t)
         t.start()
 

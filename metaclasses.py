@@ -26,7 +26,7 @@ Output:
 registry = {}
 
 
-class CommandMeta(type):
+class MetaCommand(type):
 
     def __new__(cls, name, bases, namespace):
 
@@ -39,17 +39,17 @@ class CommandMeta(type):
         print("-" * 40)
         new_class = super().__new__(cls, name, bases, namespace)
 
-        if name != "Command":
+        if name != "BaseCommand":
             registry[new_class.name] = new_class
 
         return new_class
 
 
-class Command(metaclass=CommandMeta):
+class BaseCommand(metaclass=MetaCommand):
     pass
 
 
-class HelloCommand(Command):
+class HelloCommand(BaseCommand):
 
     name = "hello"
 
@@ -57,7 +57,7 @@ class HelloCommand(Command):
         print("hello")
 
 
-class GoodbyeCommand(Command):
+class GoodbyeCommand(BaseCommand):
 
     name = "goodbye"
 

@@ -10,8 +10,10 @@ Example 06 depends on Example 05 because it reads the generated
 
 import cProfile
 import math
+import os
 import pstats
 import sys
+import textwrap
 import time
 import timeit
 import tracemalloc
@@ -66,11 +68,13 @@ def example_03():
     list_comp = timeit.timeit("[x*x for x in range(1000)]", number=10000)
 
     loop = timeit.timeit(
-        """
-result = []
-for x in range(1000):
-    result.append(x*x)
-""",
+        textwrap.dedent(
+            """
+                result = []
+                for x in range(1000):
+                    result.append(x*x)
+            """
+        ),
         number=10000,
     )
 
@@ -137,6 +141,8 @@ def example_06():
     stats.sort_stats("cumulative")
 
     stats.print_stats(10)
+
+    os.remove("profile.prof")
 
 
 # ------------------------------------------------------------

@@ -3,7 +3,7 @@ By default, Python stores instance attributes in a dictionary called `__dict__`.
 This makes Python objects flexible because new attributes can be added at
 runtime.
 
-`__slot__` allows a class to declare exactly which attributes it will have,
+`__slots__` allows a class to declare exactly which attributes it will have,
 eliminating the per-instance dictionary and reducing memory usage
 """
 
@@ -24,8 +24,8 @@ from dataclasses import dataclass
 #
 #         +----------------------+
 #         | GC header    16      |
-#         | ob_refcount      8   |
-#         | ob_type ptr      8   |
+#         | ob_refcount   8      |
+#         | ob_type ptr   8      |
 #         | __dict__ ptr  8 ------------+
 #         | weakref ptr   8      |      |
 #         +----------------------+      |
@@ -73,7 +73,7 @@ class Animal:
     __slots__ = ("name",)
 
 
-# NOTE: subclass w/o `__slot__` automatically gets a `__dict__`
+# NOTE: subclass w/o `__slots__` automatically gets a `__dict__`
 class Dog(Animal):
     # __slots__ = ()
     pass
@@ -94,9 +94,9 @@ def main():
 
     # `__sizeof__()`: ob_refcount + ob_type
     print(f"has __dict__: {hasattr(p, '__dict__')}")
-    print(f"raw C level size: {p.__sizeof__()}")  # output: 16
+    print(f"raw C level size: {p.__sizeof__()}")  # output: 16 ?
     print(f"Python's reported size: {sys.getsizeof(p)}")  # output: 48
-    print(f"__dict__ size: {sys.getsizeof(p.__dict__)}")
+    print(f"__dict__ size: {sys.getsizeof(p.__dict__)}")  # output: 296
     print(f"p.x size: {sys.getsizeof(p.x)}")
     print(f"p.y size: {sys.getsizeof(p.y)}")
     print(f"p.color size: {sys.getsizeof(p.color)}")

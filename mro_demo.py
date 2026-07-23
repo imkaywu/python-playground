@@ -1,7 +1,7 @@
 """
-MRO is the algorithm Python uses to determine which method or attribute to use
-when a class inherits from multiple parent classes. Python searches classes in
-a specific order called the Method Resolution Order.
+MRO (Method Resolution Order) is the algorithm Python uses to determine which
+method or attribute to use when a class inherits from multiple parent classes.
+Python searches classes in a specific order called MRO .
 """
 
 

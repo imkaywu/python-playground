@@ -16,7 +16,7 @@ from multiprocessing import Manager, Pool, Process, Queue, Value
 # Creating Processes
 def worker(name):
 
-    print(f"{name} running " f"(PID={os.getpid()})")
+    print(f"{name} running (PID={os.getpid()})")
 
     time.sleep(0.1)
 
@@ -43,7 +43,7 @@ def increment():
 
     counter += 1
 
-    print(counter)
+    print(f"counter inside process: {counter}")
 
 
 def example_2():
@@ -52,7 +52,7 @@ def example_2():
     p.start()
     p.join()
 
-    print(counter)
+    print(f"counter outside of process: {counter}")
 
 
 # Process Pool

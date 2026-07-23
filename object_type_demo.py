@@ -36,6 +36,9 @@ def main():
     print(type(object))
     print(type(type))
 
+    print(object.__class__)
+    print(type.__class__)
+
     print("-" * 40)
 
     # Also true:

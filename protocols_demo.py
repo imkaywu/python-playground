@@ -1,6 +1,6 @@
 """
-A Protocol defines a set of methods or attributes that a type must have, without
-requiring inheritance.
+A Protocol defines a set of methods or attributes that a type must have,
+without requiring inheritance.
 
 Protocols allow code to depend on capabilities instead of inheritance
 hierarchies.

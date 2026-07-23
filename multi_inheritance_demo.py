@@ -1,21 +1,13 @@
 """
 Multiple inheritance allows a class to inherit from more than one parent class.
-Python uses multiple inheritance extensively through mixins—small
+Python uses multiple inheritance extensively through mixins — small
 classes that provide a specific capability. Rather than building huge
 inheritance hierarchies, Python code often combines multiple focused
 behaviors into a single class.
 
 Multiple inheritance becomes manageable because Python's MRO provides a
-deterministic method lookup order.inheritance allows a class to inherit from
+deterministic method lookup order. Inheritance allows a class to inherit from
 more than one parent class.
-
-Python uses multiple inheritance extensively through mixins—small classes that
-provide a specific capability. Rather than building huge inheritance
-hierarchies, Python code often combines multiple focused behaviors into a
-single class.
-
-Multiple inheritance becomes manageable because Python's MRO provides a
-deterministic method lookup order.
 """
 
 

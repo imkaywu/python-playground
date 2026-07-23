@@ -36,13 +36,13 @@ def example_01():
             f.write(
                 textwrap.dedent(
                     """
-                print("Loading greetings module...")
-
-                message = "Hello!"
-
-                def greet():
-                    print(message)
-            """
+                        print("Loading greetings module...")
+        
+                        message = "Hello!"
+        
+                        def greet():
+                            print(message)
+                    """
                 )
             )
 
@@ -196,11 +196,11 @@ def example_07():
             f.write(
                 textwrap.dedent(
                     """
-                print("Loaded A")
-                import b
-
-                x = 42
-            """
+                        print("Loaded A")
+                        import b
+        
+                        x = 42
+                    """
                 )
             )
 
@@ -208,11 +208,11 @@ def example_07():
             f.write(
                 textwrap.dedent(
                     """
-                print("Loaded B")
-                import a
-
-                print(a.x)
-            """
+                        print("Loaded B")
+                        import a
+        
+                        print(a.x)
+                    """
                 )
             )
 
@@ -267,10 +267,10 @@ def example_10():
             f.write(
                 textwrap.dedent(
                     """
-                print("Top-level code is executing!")
-
-                x = 123
-            """
+                        print("Top-level code is executing!")
+        
+                        x = 123
+                    """
                 )
             )
 
@@ -315,9 +315,9 @@ def example_12():
             f.write(
                 textwrap.dedent(
                     """
-                def add(a, b):
-                    return a + b
-            """
+                        def add(a, b):
+                            return a + b
+                    """
                 )
             )
 
